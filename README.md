@@ -12,11 +12,11 @@ Welcome to my development repository for the Machine Learning Internship at **Co
   
 ---
 
-## 🚀 Assigned Tasks & Deliverables
+## Assigned Tasks & Deliverables
 
 Per the structural guidelines, I have selected two advanced-level tasks within the Machine Learning domain to fulfill my internship project benchmarks.
 
-### 🌲 Task 1: Advanced Random Forest Classifier
+### Task 1: Advanced Random Forest Classifier
 * **Description:** Implement a robust Random Forest machine learning architecture optimized for classification pipelines using complex multi-feature datasets.
 * **Core Objectives:**
   * Execute systematic hyperparameter tuning protocols, explicitly targeting optimal tree counts (`n_estimators`) and maximum tree depths (`max_depth`).
@@ -24,7 +24,7 @@ Per the structural guidelines, I have selected two advanced-level tasks within t
   * Run feature importance analysis algorithms to extract, map, and visualize key dataset drivers.
 * **Tech Stack:** Python, scikit-learn, pandas, matplotlib.
 
-### 🧠 Task 2: Deep Learning Feed-Forward Neural Networks
+### Task 2: Deep Learning Feed-Forward Neural Networks
 * **Description:** Design, construct, and optimize a custom feed-forward neural network pipeline utilizando TensorFlow and Keras backends for tabular or image multi-class problems (such as MNIST digit classification).
 * **Core Objectives:**
   * Architect clean pipelines for data loading, pixel/feature normalization, and tensor batch preparation.
