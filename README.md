@@ -9,7 +9,7 @@ Welcome to my development repository for the Machine Learning Internship at **Co
 * **Role:** Machine Learning Intern
 * **Intern ID:** CV/AI/82079
 * **Timeline:** 1 Month
-* 
+  
 ---
 
 ## 🚀 Assigned Tasks & Deliverables
