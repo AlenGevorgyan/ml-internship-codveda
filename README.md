@@ -40,11 +40,12 @@ Per the structural guidelines, I have selected two advanced-level tasks within t
 To maintain clear separation between classical ensemble methods and deep learning tensor computations, the directory structure is organized as follows:
 
 ```text
-├── .gitignore                      # Prevents massive dataset binary & .pt file uploads
+├── .gitignore                      
 ├── README.md                       # Comprehensive project landing page
 ├── requirements.txt                # Fixed python dependency mapping
 │
 ├── random_forest_classifier/       # Track 1: Advanced Random Forest Framework
+|   |── data/
 │   ├── notebooks/                  # Prototyping, feature engineering, and tuning
 │   │   └── random_forest_eda.ipynb
 │   ├── src/                        # Modular source scripts
@@ -53,6 +54,7 @@ To maintain clear separation between classical ensemble methods and deep learnin
 │   └── outputs/                    # Exported feature importance charts & matrices
 │
 └── neural_networks_tf/             # Track 2: TensorFlow/Keras Deep Learning
+    |── data/
     ├── notebooks/                  # Topology design & initial tensor shape verification
     │   └── neural_net_sandbox.ipynb
     ├── src/                        # Modular training frameworks
