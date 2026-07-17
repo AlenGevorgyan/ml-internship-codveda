@@ -1,17 +1,3 @@
-"""
-train_nn.py
------------
-Task 2: MNIST digit classification with a feed-forward net.
-
-Loads MNIST (via keras.datasets, falls back to a local Kaggle-style
-CSV if there's no internet on the machine this runs on), normalizes
-pixel values, flattens each 28x28 image into a 784-length vector,
-trains the model from network_architecture.py, and plots loss/accuracy
-curves.
-
-Run from inside neural_networks_tf/src/
-"""
-
 import os
 import numpy as np
 import pandas as pd
@@ -23,9 +9,6 @@ from tensorflow.keras.datasets import mnist
 
 from network_architecture import build_model
 
-# fallback path if keras can't pull the dataset (no internet / firewall
-# on the machine) -- point this at Kaggle's digit-recognizer train.csv
-# (columns: label, pixel0, pixel1, ..., pixel783) if you need it
 FALLBACK_CSV_PATH = "../data/mnist_train.csv"
 
 OUTPUT_DIR = "../outputs"
@@ -37,11 +20,6 @@ NUM_PIXELS = IMG_SIZE * IMG_SIZE
 
 
 def load_mnist():
-    """
-    Tries the standard keras.datasets.mnist loader first (downloads +
-    caches automatically, comes pre-split into train/test). Falls back
-    to a local CSV export if that fails for whatever reason.
-    """
     try:
         (X_train, y_train), (X_test, y_test) = mnist.load_data()
         print("loaded MNIST via keras.datasets "
@@ -58,8 +36,6 @@ def _load_mnist_from_csv(path):
     y = df["label"].values
     X = df.drop(columns=["label"]).values.reshape(-1, IMG_SIZE, IMG_SIZE)
 
-    # csv fallback usually only gives one file, so carve out a test
-    # split manually to match the shape the rest of the script expects
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.15, random_state=RANDOM_STATE, stratify=y
@@ -68,9 +44,6 @@ def _load_mnist_from_csv(path):
 
 
 def prepare_data(X_train, y_train, X_test, y_test):
-    # flatten 28x28 -> 784, and scale pixel values from 0-255 down to
-    # 0-1 (plain feed-forward net trains way more reliably on
-    # normalized inputs than raw pixel intensities)
     X_train = X_train.reshape(-1, NUM_PIXELS).astype("float32") / 255.0
     X_test = X_test.reshape(-1, NUM_PIXELS).astype("float32") / 255.0
 
@@ -112,11 +85,7 @@ def main():
 
     model = build_model(input_dim=X_train.shape[1], num_classes=10)
     model.summary()
-
-    # held out 10% of the training data as validation, early stopping
-    # so it doesn't just keep training past the point it stopped
-    # actually improving (MNIST is big enough that epochs get slow,
-    # no reason to run all of them if val loss plateaus early)
+    
     early_stop = EarlyStopping(
         monitor="val_loss", patience=5, restore_best_weights=True
     )

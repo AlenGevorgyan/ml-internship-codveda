@@ -1,15 +1,3 @@
-"""
-train_rf.py
------------
-Task 1: Advanced Random Forest Classifier
-
-Grid-searches n_estimators / max_depth, cross-validates, reports
-precision/recall/f1, and dumps a feature importance chart + confusion
-matrix into outputs/.
-
-Run from inside random_forest_classifier/src/
-"""
-
 import os
 import numpy as np
 import pandas as pd
@@ -32,9 +20,6 @@ from data_loader import get_processed_data
 OUTPUT_DIR = "../outputs"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# grid to search over -- tried a wider grid first but it took forever
-# on my laptop so trimmed it down to the values that were actually
-# moving the CV score
 PARAM_GRID = {
     "n_estimators": [100, 200, 400],
     "max_depth": [None, 5, 10, 20],
@@ -79,13 +64,10 @@ def evaluate_model(model, X_train, y_train, X_test, y_test):
     print("\nfull classification report:")
     print(classification_report(y_test, y_pred))
 
-    # cross-val score on the full training set too, just as a sanity
-    # check against overfitting to the grid search's own folds
     cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring="f1_weighted")
     print("5-fold CV f1 (refit model):", np.round(cv_scores, 4))
     print("mean:", round(cv_scores.mean(), 4), "std:", round(cv_scores.std(), 4))
 
-    # confusion matrix plot
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(5, 4))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
