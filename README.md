@@ -1,63 +1,69 @@
-# Codveda Technologies — Machine Learning Internship
+# ML Internship — Codveda Technologies
 
-Welcome to my development repository for the Machine Learning Internship at **Codveda Technologies**[cite: 1]. This repository serves as a centralized hub tracking my progress, source code, data preprocessing pipelines, and model evaluation metrics for the assigned engineering tasks over the 1-month program duration.
+Two end-to-end machine learning tasks from my ML Engineering internship at Codveda Technologies. Each task goes from raw data to a trained model, evaluation and charts.
 
----
+## Task 1: Random Forest for customer churn
 
-## Intern Information
-* **Name:** Alen Gevorgyan
-* **Role:** Machine Learning Intern
-* **Intern ID:** CV/AI/82079
-* **Timeline:** 1 Month
-  
----
+Predicts whether a customer will leave (churn), using a customer churn dataset.
 
-## Assigned Tasks & Deliverables
+How it works (`random-forest-classifier/src/`):
 
-Per the structural guidelines, I have selected two advanced-level tasks within the Machine Learning domain to fulfill my internship project benchmarks.
+1. **Data prep** (`data_loader.py`): drops ID columns, turns number-like text into numbers, removes rows with missing values, one-hot encodes categories, scales features, and makes a stratified 80/20 train/test split (the classes are unbalanced).
+2. **Tuning** (`train_rf.py`): grid search over `n_estimators`, `max_depth` and `min_samples_split` with 5-fold cross-validation, scored by weighted F1.
+3. **Evaluation:** accuracy, precision, recall, F1, 5-fold CV on the best model, and a confusion matrix.
+4. **Feature importance:** chart of the 15 most important features.
 
-### Task 1: Advanced Random Forest Classifier
-* **Description:** Implement a robust Random Forest machine learning architecture optimized for classification pipelines using complex multi-feature datasets.
-* **Core Objectives:**
-  * Execute systematic hyperparameter tuning protocols, explicitly targeting optimal tree counts (`n_estimators`) and maximum tree depths (`max_depth`).
-  * Safeguard model generalization using cross-validation routines alongside classical performance evaluation metrics (Precision, Recall, F1-Score).
-  * Run feature importance analysis algorithms to extract, map, and visualize key dataset drivers.
-* **Tech Stack:** Python, scikit-learn, pandas, matplotlib.
+Outputs: `outputs/confusion_matrix.png`, `outputs/feature_importance.png`. The notebook `notebooks/random_forest_eda.ipynb` has the data exploration and notes.
 
-### Task 2: Deep Learning Feed-Forward Neural Networks
-* **Description:** Design, construct, and optimize a custom feed-forward neural network pipeline utilizando TensorFlow and Keras backends for tabular or image multi-class problems (such as MNIST digit classification).
-* **Core Objectives:**
-  * Architect clean pipelines for data loading, pixel/feature normalization, and tensor batch preparation.
-  * Map a multi-layer deep network topology defining explicit Input, Hidden, and Output layers with localized activation functions.
-  * Implement backpropagation execution scripts utilizing robust loss functions and gradient-descent optimizers.
-  * Capture and graph structural validation losses versus training loss curves to monitor for overfitting.
-* **Tech Stack:** Python, TensorFlow/Keras, pandas, matplotlib.
+## Task 2: Feed-forward neural network for MNIST
 
----
+Classifies handwritten digits (0–9) with TensorFlow/Keras.
 
-## Repository Layout
+How it works (`neural_networks_tf/src/`):
 
-To maintain clear separation between classical ensemble methods and deep learning tensor computations, the directory structure is organized as follows:
+1. **Data:** loads MNIST from `keras.datasets` (falls back to a local CSV), flattens each 28x28 image to 784 values and scales pixels to 0–1.
+2. **Model** (`network_architecture.py`): Dense 256 → Dropout 0.3 → Dense 128 → Dropout 0.3 → Dense 64 → Dense 10 (softmax). Adam optimizer, sparse categorical cross-entropy.
+3. **Training** (`train_nn.py`): up to 30 epochs, batch size 128, 10% validation split, early stopping on validation loss.
+4. **Evaluation:** test accuracy, classification report, confusion matrix, and loss/accuracy curves.
 
-```text
-├── .gitignore                      
-├── README.md                       # Comprehensive project landing page
-├── requirements.txt                # Fixed python dependency mapping
-│
-├── random_forest_classifier/       # Track 1: Advanced Random Forest Framework
-|   |── data/
-│   ├── notebooks/                  # Prototyping, feature engineering, and tuning
-│   │   └── random_forest_eda.ipynb
-│   ├── src/                        # Modular source scripts
-│   │   ├── data_loader.py          # Preprocessing and scaling logic
-│   │   └── train_rf.py             # Hyperparameter tuning & metric tracking
-│   └── outputs/                    # Exported feature importance charts & matrices
-│
-└── neural_networks_tf/             # Track 2: TensorFlow/Keras Deep Learning
-    |── data/
-    ├── notebooks/                  # Topology design & initial tensor shape verification
-    │   └── neural_net_sandbox.ipynb
-    ├── src/                        # Modular training frameworks
-    │   ├── network_architecture.py # Deep learning model definition layer classes
-    │   └── train_nn.py             # Backpropagation execution loops
-    └── outputs/                    # Loss curves & accuracy performance visualizations
+Output: `outputs/loss_accuracy_curves.png`. The notebook `notebooks/neural_net_sandbox.ipynb` walks through each step.
+
+## How to run
+
+```bash
+git clone https://github.com/AlenGevorgyan/ml-internship-codveda.git
+cd ml-internship-codveda
+pip install -r requirements.txt
+```
+
+Task 1 needs the churn CSV, which is not in the repo. Save it as `random-forest-classifier/data/churn_data.csv`, then:
+
+```bash
+cd random-forest-classifier/src
+python train_rf.py
+```
+
+Task 2 downloads MNIST automatically:
+
+```bash
+cd neural_networks_tf/src
+python train_nn.py
+```
+
+Run the scripts from inside `src/`, because the paths to `data/` and `outputs/` are relative.
+
+## Limits
+
+- The churn dataset is not included, so Task 1 cannot run from a fresh clone.
+- Task 2 is a plain dense network. A CNN would suit images better.
+- Results are printed to the console and are not saved to a file.
+
+## Next steps
+
+- Add the dataset source and a download step for Task 1.
+- Compare the Random Forest with a gradient boosting model.
+- Try a small CNN for Task 2 and compare.
+
+## Tech
+
+Python, pandas, NumPy, scikit-learn, TensorFlow/Keras, matplotlib, seaborn, Jupyter.
